@@ -23,24 +23,17 @@ const roster = [];
 // }
 // photoBox.firstElementChild.prepend(fragment);
 // Lets see if we can give it some data
-async function getCharacter(){
-    const characters = await fetch(charaURL+'all');
-    const indiv = await characters.json();
-    indiv.forEach(pc => {
-
-    });
-}
 async function getRoster(){
     const characters = await fetch(charaURL+'all');
     const init = await characters.json();
     init.forEach(pc => {
         roster.push(pc)
     })
-    populateInformation(roster);
+    populateInformation();
 }
 getRoster();
 //OK, we got the data, Time to put it to use.
-function populateInformation(profile){
+function populateInformation(){
     roster.forEach(pc => {
         const option = document.createElement('option');
         let name = 'Traveler';
@@ -51,9 +44,12 @@ function populateInformation(profile){
     });
 }
 function populateCard(event){
-    nametag.innerText = event.target.value;
+    const pcObj = roster.find(pc => pc.name === event.target.value);
+    nametag.innerText = pcObj.name;
+    nametag.nextElementSibling.innerText = `Vision: ${pcObj.vision}`
+    nametag.nextElementSibling.nextElementSibling.innerText = `Weapon: ${pcObj.weapon}`
     picture.setAttribute('src','./img/0000.png');
-    photoBox.style.backgroundColor='red';
+    nametag.parentElement.style.background=`var(--${pcObj.vision})`;
     console.log(event.target.value);
 }
 //Nice, we made a dropdown. Now let's use the dropdown... to make data? Make a Card?

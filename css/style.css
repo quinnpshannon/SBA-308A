@@ -1,4 +1,45 @@
-.row {
+/* CSS Custom Properties */
+:root {
+    --Hydro: #0384fc;
+    --Electro: #9003fc;
+    --Anemo: #03fcd3;
+    --Cryo: #03e3fc;
+    --Dendro: #62fc03;
+    --Pyro: #fc2c03;
+    --Geo: #fcb603;
+    --main-bg: #4a4e4d;
+    --top-menu-bg: #0e9aa7;
+    --sub-menu-bg: #3da4ab;
+}
+body {
+    background-color: #4a4e4d;
     display: flex;
     justify-content: center;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+}
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+.column {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-right: 5px;
+}
+#dropperBox {
+    background-color: green;
+    justify-content: flex-start;
+}
+#boxHome .row .column:nth-child(2) {
+    min-width: 320px;
+    width: 30vw;
+    border-radius: 10px;
 }
