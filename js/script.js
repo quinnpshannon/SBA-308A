@@ -1,13 +1,10 @@
+import { getImages } from "./images.js";
 const photoBox = document.getElementById('boxHome');
 const picture = photoBox.firstElementChild.firstElementChild.firstElementChild
 const nametag = photoBox.firstElementChild.lastElementChild.firstElementChild
 const charaDrop = document.getElementById('dropper');
 const baseURL = 'https://genshin.jmp.blue/'
-const charaURL = 'https://genshin.jmp.blue/characters/';
-const charaImg = 'https:cdn.wanderer.moe/genshin-impact/character-icons/UI_AvatarIcon_'
 const roster = [];
-const commonMats = [];
-const bossMats = [];
 // Let's make some stuff to populate
 // const fragment = new DocumentFragment();
 // for(let x=0;x<4;x++){
@@ -27,14 +24,7 @@ const bossMats = [];
 // }
 // photoBox.firstElementChild.prepend(fragment);
 // Lets see if we can give it some data
-async function buildData(){
-    getRoster();
-    getCommonMats();
-    getBossMats();
-    getCharaMats();
-    getTalentBooks();
-    getTalentBoss();
-}
+
 async function getRoster(){
     const fetchCharaID = await fetch(baseURL+'characters/');
     const initID = await fetchCharaID.json();
@@ -54,11 +44,11 @@ async function getRoster(){
 async function getCommonMats(){
     const fetchMats = await fetch(baseURL+'materials/common-ascension/');
     const mats = await fetchMats.json();
-    for(material in mats) {
+    for(const material in mats) {
         if(mats[material].characters != undefined){
-            for(charaID of mats[material].characters){
+            for(const charaID of mats[material].characters){
                 const rosID = roster.findIndex(c => c.ID === charaID);
-                rosID >= 0 ? roster[rosID].talentBook = material : console.log(`No match for ${charaID} in common-ascension`);
+                rosID >= 0 ? roster[rosID].commonMats = material : console.log(`No match for ${charaID} in common-ascension`);
             }
         }
     };
@@ -66,11 +56,11 @@ async function getCommonMats(){
 async function getBossMats(){
     const fetchMats = await fetch(baseURL+'materials/boss-material/');
     const mats = await fetchMats.json();
-    for(material in mats) {
+    for(const material in mats) {
         if(mats[material].characters != undefined){
-            for(charaID of mats[material].characters){
+            for(const charaID of mats[material].characters){
                 const rosID = roster.findIndex(c => c.ID === charaID);
-                rosID >= 0 ? roster[rosID].talentBook = material : console.log(`No match for ${charaID} in boss-material`);
+                rosID >= 0 ? roster[rosID].bossMats = material : console.log(`No match for ${charaID} in boss-material`);
             }
         }
     };
@@ -92,11 +82,11 @@ async function getBossMats(){
 async function getTalentBoss(){
     const fetchMats = await fetch(baseURL+'materials/talent-boss/');
     const mats = await fetchMats.json();
-    for(material in mats) {
+    for(const material in mats) {
         if(mats[material].characters != undefined){
-            for(charaID of mats[material].characters){
+            for(const charaID of mats[material].characters){
                 const rosID = roster.findIndex(c => c.ID === charaID);
-                rosID >= 0 ? roster[rosID].talentBook = material : console.log(`No match for ${charaID} in talent-boss`);
+                rosID >= 0 ? roster[rosID].talentBoss = material : console.log(`No match for ${charaID} in talent-boss`);
             }
         }
     };
@@ -104,9 +94,9 @@ async function getTalentBoss(){
 async function getTalentBooks(){
     const fetchMats = await fetch(baseURL+'materials/talent-book/');
     const mats = await fetchMats.json();
-    for(material in mats) {
+    for(const material in mats) {
         if(mats[material].characters != undefined){
-            for(charaID of mats[material].characters){
+            for(const charaID of mats[material].characters){
                 const rosID = roster.findIndex(c => c.ID === charaID);
                 rosID >= 0 ? roster[rosID].talentBook = material : console.log(`No match for ${charaID} in talent-book`);
             }
@@ -128,10 +118,9 @@ function populateInformation(){
 function populateCard(event){
     const pcObj = roster.find(pc => pc.ID === event.target.value);
     nametag.innerText = pcObj.name;
-    console.log(pcObj.ID);
     nametag.nextElementSibling.innerText = `Vision: ${pcObj.vision}`
     nametag.nextElementSibling.nextElementSibling.innerText = `Weapon: ${pcObj.weapon}`
-    picture.setAttribute('src','./img/0000.png');
+    picture.setAttribute('src','./img/'+pcObj.ID+'.png');
     // picture.setAttribute('src',charaImg+pcObj.ID+'.png');
     //I am going to have to scrape the database to get images. This will be... complicated
     nametag.parentElement.style.background=`var(--${pcObj.vision})`;
