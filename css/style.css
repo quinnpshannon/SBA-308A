@@ -17,10 +17,13 @@ body {
     justify-content: center;
 }
 main {
+    background-color: #F5F3F7;
     display: flex;
+    padding: 5px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 10px;
     width: 50%;
 }
 .row {

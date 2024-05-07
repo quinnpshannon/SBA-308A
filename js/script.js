@@ -7,6 +7,7 @@ const weapon = document.getElementById('weapon');
 const picture = photoBox.firstElementChild.firstElementChild.firstElementChild;
 const charaDrop = document.getElementById('dropper');
 const ascDrop = document.getElementById('ascendLevel');
+const ascBox = document.getElementById('ascMatBox');
 const baseURL = 'https://genshin.jmp.blue/';
 const roster = [];
 const levelBox = document.getElementById('charLvl');
@@ -153,10 +154,20 @@ function populateAscend(ascID){
     const chara = roster.find(pc => pc.ID === charaDrop.value);
     const names = ascendNames(ascID, chara);
     const counts = ascendCounts(ascID, chara);
-    console.log(`You need ${counts.common} x ${names.common}`);
-    console.log(`You need ${counts.boss} x ${names.boss}`);
-    console.log(`You need ${counts.ele} x ${names.ele}`);
-    console.log(`You need ${counts.unique} x ${names.unique}`);
+    while (ascBox.lastElementChild){
+        ascBox.lastElementChild.remove();
+    }
+    for(const element in counts){
+        const input = document.createElement('input');
+        input.setAttribute('type','number');
+        input.setAttribute('min',0);
+        input.setAttribute('max',counts[element]);
+        input.value = 0
+        const label = document.createElement('label');
+        label.innerText=`${names[element]} (${counts[element]}): `;
+        label.appendChild(input);
+        ascBox.appendChild(label);
+    }
 }
 
 charaDrop.addEventListener('change', dropperEvent);
