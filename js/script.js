@@ -1,12 +1,15 @@
 import { getImages } from "./images.js";
-import { ascendData } from "./farming.js";
+import { ascendCounts, ascendNames } from "./farming.js";
 const photoBox = document.getElementById('boxHome');
-const picture = photoBox.firstElementChild.firstElementChild.firstElementChild
-const nametag = photoBox.firstElementChild.lastElementChild.firstElementChild
+const charName = document.getElementById('charName');
+const vision = document.getElementById('vision');
+const weapon = document.getElementById('weapon');
+const picture = photoBox.firstElementChild.firstElementChild.firstElementChild;
 const charaDrop = document.getElementById('dropper');
 const ascDrop = document.getElementById('ascendLevel');
-const baseURL = 'https://genshin.jmp.blue/'
+const baseURL = 'https://genshin.jmp.blue/';
 const roster = [];
+const levelBox = document.getElementById('charLvl');
 // Let's make some stuff to populate
 // const fragment = new DocumentFragment();
 // for(let x=0;x<4;x++){
@@ -34,6 +37,7 @@ async function getRoster(){
     const init = await characters.json();
     init.forEach(pc => {
         pc.ID = initID[init.indexOf(pc)];
+        pc.level = 1;
         roster.push(pc);
     })
     populateInformation();
@@ -42,7 +46,7 @@ async function getRoster(){
     getTalentBoss();
     getTalentBooks();
     getCharaMats();
-    console.log(roster[0]);
+    populateCard(dropper.value);
 }
 async function getCommonMats(){
     const fetchMats = await fetch(baseURL+'materials/common-ascension/');
@@ -119,25 +123,42 @@ function populateInformation(){
         charaDrop.appendChild(option);
     });
 }
-function populateCard(event){
-    const pcObj = roster.find(pc => pc.ID === event.target.value);
-    nametag.innerText = pcObj.name;
-    nametag.nextElementSibling.innerText = `Vision: ${pcObj.vision}`
-    nametag.nextElementSibling.nextElementSibling.innerText = `Weapon: ${pcObj.weapon}`
+function dropperEvent(event){
+    populateCard(event.target.value);
+    if(ascDrop.value != '') populateAscend(ascDrop.value);
+}
+function ascEvent(event){
+    if(event.target.value != '') populateAscend(event.target.value);
+}
+function levelEvent(event){
+    setLevel(charaDrop.value,event.target.value)
+}
+function setLevel(charaID,level){
+    const rosID = roster.find(c => c.ID === charaID);
+    rosID.level = level;
+}
+function populateCard(charaID){
+    const pcObj = roster.find(pc => pc.ID === charaID);
+    charName.innerText = pcObj.name;
+    vision.innerText = `Vision: ${pcObj.vision}`
+    weapon.innerText = `Weapon: ${pcObj.weapon}`
     picture.setAttribute('src','./img/'+pcObj.ID+'.png');
+    levelBox.value = pcObj.level;
     // picture.setAttribute('src',charaImg+pcObj.ID+'.png');
     //I am going to have to scrape the database to get images. This will be... complicated
-    nametag.parentElement.style.background=`var(--${pcObj.vision})`;
+    charName.parentElement.parentElement.style.background=`var(--${pcObj.vision})`;
 }
 //Nice, we made a dropdown. Now let's use the dropdown... to make data? Make a Card?
-function populateAscend(event){
+function populateAscend(ascID){
     const chara = roster.find(pc => pc.ID === charaDrop.value);
-    const counts = ascendData(event.target.value, chara);
-    console.log(counts);
-    console.log(`You need ${counts.commonNum} x ${counts.commonName}`);
-    console.log(`You need ${counts.bossNum} x ${counts.bossName}`);
-    console.log(`You need ${counts.eleNum} x ${counts.eleName}`);
-    console.log(`You need ${counts.uniqueNum} x ${counts.uniqueName}`);
+    const names = ascendNames(ascID, chara);
+    const counts = ascendCounts(ascID, chara);
+    console.log(`You need ${counts.common} x ${names.common}`);
+    console.log(`You need ${counts.boss} x ${names.boss}`);
+    console.log(`You need ${counts.ele} x ${names.ele}`);
+    console.log(`You need ${counts.unique} x ${names.unique}`);
 }
-charaDrop.addEventListener('change', populateCard);
-ascDrop.addEventListener('change', populateAscend);
+
+charaDrop.addEventListener('change', dropperEvent);
+ascDrop.addEventListener('change', ascEvent);
+levelBox.addEventListener('change',levelEvent);

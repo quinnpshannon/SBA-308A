@@ -39,6 +39,7 @@ main {
     justify-content: flex-start;
 }
 #boxHome .row .column:nth-child(2) {
+    padding: 10px;
     min-width: 320px;
     width: 30vw;
     border-radius: 10px;

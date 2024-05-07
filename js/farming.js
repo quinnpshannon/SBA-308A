@@ -59,17 +59,22 @@ const commonData = await collectData('materials/common-ascension/');
 const bossData = await collectData('materials/boss-material');
 const uniqueData = await collectData('materials/local-specialties/');
 const eleData = await collectData('materials/character-ascension/');
-export function ascendData (dropID, characterData) {
+export function ascendCounts (dropID, characterData) {
     const ascValues = ascend.find(c => c.id === dropID);
     const rtnObj = {};
-    rtnObj.commonName = commonSpecific(characterData.commonMats, ascValues.commonLvl);
-    rtnObj.commonNum = ascValues.commonMats;
-    rtnObj.bossName = bossSpecific(characterData.bossMats);
-    rtnObj.bossNum = ascValues.bossMats;
-    rtnObj.uniqueName = charaSpecific(characterData.charaMats);
-    rtnObj.uniqueNum = ascValues.charaMats;
-    rtnObj.eleName = eleSpecific(characterData.vision.toLowerCase(), ascValues.eleLvl)
-    rtnObj.eleNum = ascValues.eleMats;
+    rtnObj.common = ascValues.commonMats;
+    rtnObj.boss = ascValues.bossMats;
+    rtnObj.unique = ascValues.charaMats;
+    rtnObj.ele = ascValues.eleMats;
+    return rtnObj;
+}
+export function ascendNames (dropID, characterData) {
+    const ascValues = ascend.find(c => c.id === dropID);
+    const rtnObj = {};
+    rtnObj.common = commonSpecific(characterData.commonMats, ascValues.commonLvl);
+    rtnObj.boss = bossSpecific(characterData.bossMats);
+    rtnObj.unique = charaSpecific(characterData.charaMats);
+    rtnObj.ele = eleSpecific(characterData.vision.toLowerCase(), ascValues.eleLvl)
     return rtnObj;
 }
 function commonSpecific (dropID, rarity) {
