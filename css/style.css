@@ -43,3 +43,6 @@ main {
     width: 30vw;
     border-radius: 10px;
 }
+.visible {
+    background-color: green;
+}

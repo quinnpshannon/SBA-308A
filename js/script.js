@@ -1,8 +1,10 @@
 import { getImages } from "./images.js";
+import { ascendData } from "./farming.js";
 const photoBox = document.getElementById('boxHome');
 const picture = photoBox.firstElementChild.firstElementChild.firstElementChild
 const nametag = photoBox.firstElementChild.lastElementChild.firstElementChild
 const charaDrop = document.getElementById('dropper');
+const ascDrop = document.getElementById('ascendLevel');
 const baseURL = 'https://genshin.jmp.blue/'
 const roster = [];
 // Let's make some stuff to populate
@@ -39,6 +41,7 @@ async function getRoster(){
     getBossMats();
     getTalentBoss();
     getTalentBooks();
+    getCharaMats();
     console.log(roster[0]);
 }
 async function getCommonMats(){
@@ -65,20 +68,21 @@ async function getBossMats(){
         }
     };
 }
-// async function getCharaMats(){
-//     //Need to fix this one, It has a different key that it matches on.
-//     //Actually, these are all based on element. Don't need to fix this at all.
-//     const fetchMats = await fetch(baseURL+'materials/character-ascension/');
-//     const mats = await fetchMats.json();
-//     console.log(mats);
-//     for(material in mats) {
-//         if(mats[material].characters != undefined){
-//             for(charaID of mats[material].characters){
-//                 roster[roster.findIndex(c => c.ID === charaID)].charaMats = material;
-//             }
-//         }
-//     };
-// }
+async function getCharaMats(){
+    //Need to fix this one, It has a different key that it matches on.
+    //Actually, these are all based on element. Don't need to fix this at all.
+    const fetchMats = await fetch(baseURL+'materials/local-specialties/');
+    const regions = await fetchMats.json();
+    for(const mats in regions){
+        for(const material of regions[mats]) {
+            if(material.characters != undefined){
+                for(const charaID of material.characters){
+                    roster[roster.findIndex(c => c.ID === charaID)].charaMats = material.id;
+                }
+            }
+        };
+    }
+}
 async function getTalentBoss(){
     const fetchMats = await fetch(baseURL+'materials/talent-boss/');
     const mats = await fetchMats.json();
@@ -126,4 +130,14 @@ function populateCard(event){
     nametag.parentElement.style.background=`var(--${pcObj.vision})`;
 }
 //Nice, we made a dropdown. Now let's use the dropdown... to make data? Make a Card?
+function populateAscend(event){
+    const chara = roster.find(pc => pc.ID === charaDrop.value);
+    const counts = ascendData(event.target.value, chara);
+    console.log(counts);
+    console.log(`You need ${counts.commonNum} x ${counts.commonName}`);
+    console.log(`You need ${counts.bossNum} x ${counts.bossName}`);
+    console.log(`You need ${counts.eleNum} x ${counts.eleName}`);
+    console.log(`You need ${counts.uniqueNum} x ${counts.uniqueName}`);
+}
 charaDrop.addEventListener('change', populateCard);
+ascDrop.addEventListener('change', populateAscend);
