@@ -78,10 +78,10 @@ export function ascendNames (dropID, characterData) {
     return rtnObj;
 }
 function commonSpecific (dropID, rarity) {
-    return commonData[dropID].items[rarity-1].name;
+    if(Object.hasOwn(commonData, dropID)) return commonData[dropID].items[rarity-1].name;
 }
 function bossSpecific (dropID) {
-    return bossData[dropID].name;
+    if(Object.hasOwn(bossData, dropID)) return bossData[dropID].name;
 }
 function charaSpecific (dropID, rarity) {
     for(const region in uniqueData){

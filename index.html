@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genshin Farming Helper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="./js/images.js" type="module" defer></script>
     <script src="./js/script.js" type="module" defer></script>
     <script src="./js/farming.js" type="module" defer></script>
@@ -13,19 +16,20 @@
     <!-- Let's make a box to put some information in -->
     <main id="boxHome">
         <!-- This is going to be our Character Information thingy -->
-        <div class="row">
+        <div class="row" style='justify-content: center;'>
             <div class="column">
-                <img src="./img/0000.png" style="height: 256px;">
+                <img src="./img/0000.png" style="height: 256px;" id="photoBox">
             </div>
             <div class="column">
                 <section class="row">
                     <h1 id="charName" style="margin-right: auto">Character</h1>
                     <input type="number" name="Character Level" id="charLvl" min="1" max="90">
                 </section>
-                <section class="row" style="margin-right: auto">
-                    <h3 id="vision">Vision: </h3>
+                <section class="row">
+                    <h2 id="title"></h1>
                 </section>
-                <section class="row" style="margin-right: auto">
+                <section class="row">
+                    <h3 id="vision">Vision: </h3>
                     <h3 id="weapon">Weapon: </h3>
                 </section>
             </div>
@@ -46,8 +50,7 @@
             </select>
         </div>
         <!-- Ok, here's where we are going to put the actual logged information -->
-        <div class="row" id="ascend">
-        <div class=".row" id="ascMatBox">
+        <div class="row" id="ascMatBox" >
         </div>
     </main>
 </body>

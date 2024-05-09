@@ -7,9 +7,7 @@
     --Dendro: #62fc03;
     --Pyro: #fc2c03;
     --Geo: #fcb603;
-    --main-bg: #4a4e4d;
-    --top-menu-bg: #0e9aa7;
-    --sub-menu-bg: #3da4ab;
+    font-family: "Roboto", sans-serif;
 }
 body {
     background-color: #4a4e4d;
@@ -24,12 +22,14 @@ main {
     align-items: center;
     flex-direction: column;
     border-radius: 10px;
-    width: 50%;
+    max-width: 50%;
+    flex:auto;
 }
 .row {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin-bottom: 5px;
 }
 .column {
@@ -38,15 +38,36 @@ main {
     margin-right: 5px;
 }
 #dropperBox {
-    background-color: green;
     justify-content: flex-start;
 }
+#charLvl {
+    font-size: 2em;
+    width: 3ch;
+    text-align: end;
+    border-width: 0px;
+    border-radius: 10px;
+}
+#charName {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 2em;
+}
 #boxHome .row .column:nth-child(2) {
+    flex:auto;
     padding: 10px;
-    min-width: 320px;
     width: 30vw;
     border-radius: 10px;
 }
 .visible {
     background-color: green;
+}
+#ascMatBox {
+    justify-content: flex-end;
+}
+#ascMatBox label:first-of-type{
+    margin-left: 0;
+}
+#ascMatBox label{
+    margin-left: auto;
 }
