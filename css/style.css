@@ -48,7 +48,7 @@ main {
     border-radius: 10px;
 }
 #charName {
-    margin-top: 5px;
+    margin: 0px;
     margin-bottom: 5px;
     font-family: "Roboto", sans-serif;
     font-size: 2em;
@@ -70,4 +70,8 @@ main {
 }
 #ascMatBox label{
     margin-left: auto;
+}
+h2,h3 {
+    margin: 0px;
+    margin-bottom: 5px;
 }
